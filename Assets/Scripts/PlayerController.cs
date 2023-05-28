@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         PlayerInput();
-        Debug.Log(xVal);
         if ((transform.position.x < maxX && xVal > 0) || (transform.position.x > -maxX && xVal < 0))
         {
             transform.Translate(Vector3.right * xVal * speed * Time.deltaTime);
