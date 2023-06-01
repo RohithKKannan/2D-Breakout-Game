@@ -28,15 +28,16 @@ public class BallController : MonoBehaviour
     {
         if (paddle = col.gameObject.GetComponent<PlayerController>())
         {
-            collisionNormal = col.contacts[0].normal + paddle.GetVelocity() * paddleTurn;
+            if (Vector2.Dot(paddle.GetVelocity().normalized, direction.normalized) <= 0)
+                collisionNormal = col.contacts[0].normal + paddle.GetVelocity() * paddleTurn;
+            else
+                collisionNormal = col.contacts[0].normal;
         }
         else
         {
             collisionNormal = col.contacts[0].normal;
         }
-        Debug.Log("OnCollisionEnter2D direction : " + direction + " normal : " + collisionNormal);
         direction = Vector2.Reflect(direction, collisionNormal);
-        Debug.Log("Result direction : " + direction);
     }
     void LateUpdate()
     {
