@@ -2,35 +2,45 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
+    bool Launched = false;
     Rigidbody2D rb;
-    Vector2 velocity, newDirection;
-    bool disabled = true;
-    [SerializeField] float bounce = 1.2f;
-    [SerializeField] float firstPush = 10f;
+    Vector2 direction, collisionNormal;
+    PlayerController paddle;
+    [SerializeField] float speed = 10f;
+    [SerializeField] float paddleTurn = 2f;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 0;
     }
     void Update()
     {
-        if (disabled)
+        if (!Launched)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                rb.gravityScale = 1f;
-                disabled = false;
-                rb.velocity = Vector2.up * firstPush;
                 transform.SetParent(null);
+                direction = Vector2.up * speed;
+                Launched = true;
             }
         }
-        velocity = rb.velocity;
     }
     void OnCollisionEnter2D(Collision2D col)
     {
-        // Vector3.Reflect = returns vector that points in the reflecting direction
-        newDirection = Vector2.Reflect(velocity.normalized, col.contacts[0].normal);
-
-        rb.velocity = newDirection * Mathf.Max(velocity.magnitude, bounce);
+        if (paddle = col.gameObject.GetComponent<PlayerController>())
+        {
+            collisionNormal = col.contacts[0].normal + paddle.GetVelocity() * paddleTurn;
+        }
+        else
+        {
+            collisionNormal = col.contacts[0].normal;
+        }
+        Debug.Log("OnCollisionEnter2D direction : " + direction + " normal : " + collisionNormal);
+        direction = Vector2.Reflect(direction, collisionNormal);
+        Debug.Log("Result direction : " + direction);
+    }
+    void LateUpdate()
+    {
+        rb.velocity = speed * direction;
+        direction = rb.velocity.normalized;
     }
 }
