@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 public enum BrickType
 {
     Blue,
@@ -10,6 +11,7 @@ public enum BrickType
 public class BrickController : MonoBehaviour
 {
     int capacity;
+    [SerializeField] TMP_Text text;
     [SerializeField] BrickType brickType;
     SpriteRenderer spriteRenderer;
     [SerializeField] GameObject explosion;
@@ -17,6 +19,8 @@ public class BrickController : MonoBehaviour
     {
         SetCapacity();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        text = GetComponentInChildren<TMP_Text>();
+        UpdateText();
     }
     void SetCapacity()
     {
@@ -30,10 +34,17 @@ public class BrickController : MonoBehaviour
             default: break;
         }
     }
+    void UpdateText()
+    {
+        text.text = capacity.ToString();
+    }
     void OnCollisionEnter2D(Collision2D col)
     {
         if (capacity > 0)
+        {
             capacity--;
+            UpdateText();
+        }
         if (capacity == 0)
         {
             GameObject.Instantiate(explosion, transform.position, Quaternion.identity);
