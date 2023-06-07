@@ -15,8 +15,10 @@ public class BrickController : MonoBehaviour
     [SerializeField] BrickType brickType;
     SpriteRenderer spriteRenderer;
     [SerializeField] GameObject explosion;
+    [SerializeField] GameManager gameManager;
     void Start()
     {
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         SetCapacity();
         spriteRenderer = GetComponent<SpriteRenderer>();
         text = GetComponentInChildren<TMP_Text>();
@@ -47,6 +49,7 @@ public class BrickController : MonoBehaviour
         }
         if (capacity == 0)
         {
+            gameManager.DeleteBrick();
             GameObject.Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }

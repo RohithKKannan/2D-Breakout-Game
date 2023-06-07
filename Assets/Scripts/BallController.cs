@@ -8,9 +8,11 @@ public class BallController : MonoBehaviour
     PlayerController paddle;
     [SerializeField] float speed = 10f;
     [SerializeField] float paddleTurn = 2f;
+    [SerializeField] GameManager gameManager;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
     void Update()
     {
@@ -22,6 +24,14 @@ public class BallController : MonoBehaviour
                 direction = Vector2.up * speed;
                 Launched = true;
             }
+        }
+    }
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.layer == LayerMask.NameToLayer("Pit"))
+        {
+            gameManager.DeleteBall();
+            return;
         }
     }
     void OnCollisionEnter2D(Collision2D col)
