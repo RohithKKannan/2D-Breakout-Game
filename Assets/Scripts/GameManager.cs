@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
             brickCount--;
         else
             LevelComplete();
-        if (Random.Range(1, 5) == 1)
+        if (Random.Range(1, 10) == 1)
         {
             SpawnPowerUp(position);
         }

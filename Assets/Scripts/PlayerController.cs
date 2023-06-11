@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
         PowerUpController temp = null;
         if (temp = col.gameObject.GetComponent<PowerUpController>())
         {
+            AudioManager.Instance.PlaySound(SoundType.PickPowerUp);
             if (temp.GetPowerType() == PowerUp.Ball2x)
                 gameManager.PowerUpPicked(PowerUp.Ball2x);
             Destroy(col.gameObject);
