@@ -11,7 +11,7 @@ public class MenuController : MonoBehaviour
     }
     public void StartGame()
     {
-
+        LevelManager.Instance.LoadNextLevel();
     }
     public void SettingsClicked()
     {
@@ -23,6 +23,6 @@ public class MenuController : MonoBehaviour
     }
     public void QuitGame()
     {
-
+        LevelManager.Instance.ExitGame();
     }
 }
