@@ -8,10 +8,12 @@ public class CanvasController : MonoBehaviour
     [SerializeField] GameObject levelSuccessScreen;
     public void Pause()
     {
+        AudioManager.Instance.PlaySound(SoundType.ButtonClick);
         gameManager.PauseGame();
     }
     public void Resume()
     {
+        AudioManager.Instance.PlaySound(SoundType.ButtonClick);
         gameManager.PauseGame();
     }
     public void EnablePauseUI()
@@ -28,6 +30,7 @@ public class CanvasController : MonoBehaviour
     }
     public void Restart()
     {
+        AudioManager.Instance.PlaySound(SoundType.ButtonClick);
         gameManager.RestartLevel();
     }
     public void LevelSuccessUI()
@@ -36,10 +39,12 @@ public class CanvasController : MonoBehaviour
     }
     public void NextLevel()
     {
+        AudioManager.Instance.PlaySound(SoundType.ButtonClick);
         gameManager.NextLevel();
     }
     public void MainMenu()
     {
+        AudioManager.Instance.PlaySound(SoundType.ButtonClick);
         gameManager.LoadMainMenu();
     }
 }
