@@ -38,10 +38,16 @@ public class BallController : MonoBehaviour
     {
         if (paddle = col.gameObject.GetComponent<PlayerController>())
         {
+            AudioManager.Instance.PlaySound(SoundType.PaddleBump);
             if (Vector2.Dot(paddle.GetVelocity().normalized, direction.normalized) <= 0)
                 collisionNormal = col.contacts[0].normal + paddle.GetVelocity() * paddleTurn;
             else
                 collisionNormal = col.contacts[0].normal;
+        }
+        else if (col.gameObject.GetComponent<BrickController>() != null)
+        {
+            AudioManager.Instance.PlaySound(SoundType.BrickBump);
+            collisionNormal = col.contacts[0].normal;
         }
         else
         {

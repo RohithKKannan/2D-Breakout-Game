@@ -50,6 +50,7 @@ public class BrickController : MonoBehaviour
         if (capacity == 0)
         {
             gameManager.DeleteBrick();
+            AudioManager.Instance.PlaySound(SoundType.BrickBreak);
             GameObject.Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }

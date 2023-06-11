@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
         brickCount = GameObject.FindGameObjectsWithTag("Brick").Length;
         Debug.Log("Brick Count : " + brickCount);
         SetBallCount(1);
+        AudioManager.Instance.PlaySound(SoundType.BGMusic);
     }
     void SetBallCount(int _ballCount)
     {
@@ -34,11 +35,13 @@ public class GameManager : MonoBehaviour
     {
         if (gamePaused)
         {
+            AudioManager.Instance.ResumeMusic();
             canvasController.DisablePauseUI();
             LevelManager.Instance.UnfreezeGame();
         }
         else
         {
+            AudioManager.Instance.PauseMusic();
             canvasController.EnablePauseUI();
             LevelManager.Instance.FreezeGame();
         }
@@ -47,11 +50,15 @@ public class GameManager : MonoBehaviour
     void LevelFailed()
     {
         canvasController.GameOverScreen();
+        AudioManager.Instance.PauseMusic();
+        AudioManager.Instance.PlaySound(SoundType.GameOver);
         LevelManager.Instance.FreezeGame();
     }
     void LevelComplete()
     {
         canvasController.LevelSuccessUI();
+        AudioManager.Instance.PauseMusic();
+        AudioManager.Instance.PlaySound(SoundType.LevelComplete);
         LevelManager.Instance.FreezeGame();
     }
     public void RestartLevel()
@@ -67,6 +74,7 @@ public class GameManager : MonoBehaviour
     public void LoadMainMenu()
     {
         LevelManager.Instance.UnfreezeGame();
+        AudioManager.Instance.PlaySound(SoundType.MenuMusic);
         LevelManager.Instance.LoadMainMenu();
     }
     void Update()
