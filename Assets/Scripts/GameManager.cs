@@ -1,35 +1,93 @@
 using UnityEngine;
-
+using System.Collections.Generic;
+public enum PowerUp
+{
+    Ball2x
+};
 public class GameManager : MonoBehaviour
 {
     [SerializeField] CanvasController canvasController;
+    [SerializeField] GameObject ballPrefab;
+    [SerializeField] GameObject[] powerUps;
+    [SerializeField] List<BallController> ballList;
+    [SerializeField] float popupForce = 2f;
     bool gamePaused = false;
     int brickCount;
-    int ballCount;
+    [SerializeField] int ballCount;
+    int powerUpCount;
+    int indexCount = 2;
     void Start()
     {
         brickCount = GameObject.FindGameObjectsWithTag("Brick").Length;
-        Debug.Log("Brick Count : " + brickCount);
-        SetBallCount(1);
+        powerUpCount = powerUps.Length;
         AudioManager.Instance.PlaySound(SoundType.BGMusic);
+        ballList = new List<BallController>();
+        RefreshBallList();
     }
-    void SetBallCount(int _ballCount)
+    void RefreshBallList()
     {
-        ballCount = _ballCount;
+        ballList.Clear();
+        foreach (BallController item in GameObject.FindObjectsOfType<BallController>())
+        {
+            ballList.Add(item);
+        }
+        ballCount = ballList.Count;
     }
-    public void DeleteBall()
+    public void DeleteBall(int _index)
     {
-        if (ballCount > 1)
-            ballCount--;
-        else
+        int i = -1;
+        i = ballList.FindIndex(item => item.GetIndex() == _index);
+        if (i != -1)
+            Destroy(ballList[i].gameObject);
+        ballList.RemoveAt(i);
+        ballCount--;
+        if (ballCount == 0)
             LevelFailed();
     }
-    public void DeleteBrick()
+    public void DeleteBrick(Vector2 position)
     {
         if (brickCount > 1)
             brickCount--;
         else
             LevelComplete();
+        if (Random.Range(1, 5) == 1)
+        {
+            SpawnPowerUp(position);
+        }
+    }
+    public void SpawnPowerUp(Vector2 position)
+    {
+        int index = Random.Range(0, powerUpCount);
+        if (index < powerUpCount)
+        {
+            GameObject newPowerUp = Instantiate(powerUps[index], position, Quaternion.identity);
+            newPowerUp.GetComponent<Rigidbody2D>().AddForce(Vector2.up * popupForce, ForceMode2D.Impulse);
+        }
+    }
+    public void PowerUpPicked(PowerUp powerUp)
+    {
+        switch (powerUp)
+        {
+            case PowerUp.Ball2x:
+                DoubleTheBalls();
+                break;
+            default: break;
+        }
+    }
+    void DoubleTheBalls()
+    {
+        List<BallController> tempList = new List<BallController>(ballList);
+        foreach (BallController item in tempList)
+        {
+            GameObject newBall = Instantiate(ballPrefab, item.transform.position, Quaternion.identity);
+            BallController newBallController = newBall.GetComponent<BallController>();
+            newBallController.JustSpawned(indexCount++);
+            newBallController.SetDirection(-1 * item.GetDirection());
+            newBall.transform.localScale = new Vector3(1, 1, 1);
+            ballCount++;
+            ballList.Add(newBallController);
+        }
+        tempList.Clear();
     }
     public void PauseGame()
     {
