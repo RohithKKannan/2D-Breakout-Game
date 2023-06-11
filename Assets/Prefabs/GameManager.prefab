@@ -45,3 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasController: {fileID: 0}
+  ballPrefab: {fileID: 1828794550792740383, guid: 174a2d36aab995c47a79cdb76cf0ebb9, type: 3}
+  powerUps:
+  - {fileID: 8628382032779187232, guid: 59480a40c2f88a143873ee071f802443, type: 3}
+  ballList: []
+  popupForce: 2

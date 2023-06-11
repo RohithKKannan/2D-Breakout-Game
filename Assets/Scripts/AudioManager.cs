@@ -23,7 +23,7 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         PlaySound(SoundType.MenuMusic);
-        SetMusicVolume(0.3f);
+        SetMusicVolume(0.2f);
         SetSfxVolume(0.5f);
     }
     public void PlaySound(SoundType soundType)
@@ -66,7 +66,7 @@ public class AudioManager : MonoBehaviour
 }
 public enum SoundType
 {
-    ButtonClick, PaddleBump, BrickBump, BrickBreak, LevelComplete, GameOver, BGMusic, MenuMusic
+    ButtonClick, PaddleBump, BrickBump, BrickBreak, LevelComplete, GameOver, BGMusic, MenuMusic, PickPowerUp
 }
 [Serializable]
 public class Sound

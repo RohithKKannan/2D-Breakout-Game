@@ -8,6 +8,7 @@ TagManager:
   - Ball
   - Wall
   - GameManager
+  - 2xBall
   layers:
   - Default
   - TransparentFX
@@ -16,9 +17,9 @@ TagManager:
   - Water
   - UI
   - Pit
-  - 
-  - 
-  - 
+  - PowerUp
+  - Brick
+  - Ball
   - 
   - 
   - 
